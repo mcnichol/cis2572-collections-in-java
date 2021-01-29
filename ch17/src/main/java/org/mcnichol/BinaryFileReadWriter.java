@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
  * This application writes fifty random integers to a file in binary format and then reads all values from same file
  * and prints the max, min, mean, and sum statistics of the file.
  * <p>
- * Description: This application leverages a static initializer block to configure formatting for the root
+ * <b>Description:</b> This application leverages a static initializer block to configure formatting for the root
  * {@link Logger} in addition to the default {@link java.util.logging.FileHandler} and {@link java.util.logging.ConsoleHandler}.
  * It accepts a system property of <b>logLevel</b> which can be set to any of the logging levels defined in {@link Level}.
  * <p>
@@ -26,9 +26,9 @@ import java.util.stream.IntStream;
  * passed to a {@link DataOutputStream} which will be written to by an {@link IntStream} of 50 random integers populated
  * by {@link BinaryFileReadWriter#generateRandomIntStream()}.
  * <p>
- * <i><b>Note:</b> During the write operation to the {@link DataOutputStream} an {@link IOException} can be thrown from
+ * <b>Note:</b> During the write operation to the {@link DataOutputStream} an {@link IOException} can be thrown from
  * within the {@link IntStream}. To handle this checked exception a {@link FunctionalInterface}
- * {@link java.util.function.IntConsumer} is created and the {@link IntStream} is cast to this to ensure proper handling.</i>
+ * {@link java.util.function.IntConsumer} is created and the {@link IntStream} is cast to this to ensure proper handling.
  * <p>
  * The {@link BinaryFileReadWriter#readIntegerFileAndPopulateStatistics()} ()} method is called where an
  * {@link IntStream#builder()} is created for storing all integers read from a binary file. A {@link FileInputStream}
@@ -42,21 +42,25 @@ import java.util.stream.IntStream;
  * <p>
  * This file is read from until hitting an {@link EOFException} where it is caught and the mean is computed using
  * {@link BinaryFileReadWriter#computeMeanOfIntStreamAndUpdateStatistics(IntStream)}.
- * <i><b>Note: </b> If an {@link IOException} occurs during the read process the exception is caught and the system will exit.</i>
+ * <p>
+ * <b>Note:</b> If an {@link IOException} occurs during the read process the exception is caught and the system will exit.
  * <p>
  * At the completion of the program the statistics are formatted and printed to the active {@link java.util.logging.Handler}
  * by calling {@link BinaryFileReadWriter#printStatistics()}
  * <p>
- * Usage: This application can be run from the terminal by navigating to the root directory and running the gradle
+ * <b>Usage:</b> This application can be run from the terminal by navigating to the root directory and running the gradle
  * wrapper on both *Nix and Windows systems. If you have issues ensure your JAVA_HOME environment variable is set and
  * can be seen from your PATH.
+ * <ul>
+ *     <li>{@code ./gradlew run} (*Nix)</li>
+ *     <li>{@code gradlew.bat run } (win)</li>
+ * </ul>
  * <p>
- * e.g. <code>./gradlew run</code> (*Nix) <code>./gradlew.bat run </code>(win)
- * <i><b>Note: </b> Logging levels can be configured by setting the gradle property  <code>./gradlew run -DlogLevel=FINE</code></i>
+ * <b>Note: </b> Logging levels can be configured by setting the gradle property  <code>./gradlew run -DlogLevel=FINE</code>
  * <p>
- * Course Name: Collections in Java
- * Section: CIS-2572-NET02
- * Instructor: Barry Speller
+ * <b>Course Name:</b> Collections in Java
+ * <b>Section:</b> CIS-2572-NET02
+ * <b>Instructor:</b> Barry Speller
  *
  * @author Michael McNichol
  * @version 1.0
