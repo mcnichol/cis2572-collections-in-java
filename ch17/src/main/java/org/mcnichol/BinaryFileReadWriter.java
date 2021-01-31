@@ -93,6 +93,11 @@ public class BinaryFileReadWriter {
         return new double[]{Integer.MIN_VALUE, Integer.MAX_VALUE, 0, 0};
     }
 
+    /**
+     * Creates a {@link DataOutputStream} from {@link BinaryFileReadWriter#DATA_FILE} and populates it with 50 random
+     * integers passed via an {@link IntStream}. As each value in the {@link IntStream} is iterated over a, it is cast
+     * to a {@link FunctionalInterface} of type {@link CheckedFileLogAndWrite} to handle the checked {@link IOException}
+     */
     private static void generateRandomIntsAndWriteToFile() {
         try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(DATA_FILE, true))) {
             logger.log(Level.INFO, "Generating 50 Random Integers");
@@ -100,13 +105,15 @@ public class BinaryFileReadWriter {
 
             logger.log(Level.INFO, "Displaying and Writing 50 Random Integers");
             intStream.forEach((CheckedFileLogAndWrite) dos::writeInt);
-
         } catch (IOException e) {
             logger.log(Level.SEVERE, String.format("Error creating output stream from file %s", DATA_FILE));
         }
     }
 
-    private static IntStream generateRandomIntStream() throws IOException {
+    /**
+     * @return An {@link IntStream} populated with 50 random integers between 0 (inclusive) and 100_000 (exclusive)
+     */
+    private static IntStream generateRandomIntStream() {
         IntStream.Builder builder = IntStream.builder();
 
         for (int i = 0; i < 50; i++) {
@@ -117,9 +124,13 @@ public class BinaryFileReadWriter {
     }
 
     private static int getRandomInt() {
-        return (int) (Math.random() * 100000);
+        return (int) (Math.random() * 100_000);
     }
 
+    /**
+     * Creates a DataInputStream from {@link BinaryFileReadWriter#DATA_FILE} and populates {@link BinaryFileReadWriter#statistics} with
+     * with max, min, mean, and average of included file.
+     */
     private static void readIntegerFileAndPopulateStatistics() {
         IntStream.Builder builder = IntStream.builder();
         try (DataInputStream dis = new DataInputStream(new FileInputStream(DATA_FILE))) {
@@ -141,6 +152,12 @@ public class BinaryFileReadWriter {
         }
     }
 
+    /**
+     * Checks for highest value and stores result in MAX statistics index location if change detected.
+     * Logs at a FINE level when a change occurs
+     *
+     * @param currentValue Current value accessed from input stream
+     */
     private static void checkIfMaximumValueAndUpdateStatistics(int currentValue) {
         if (currentValue > statistics[STATISTICS.MAX.index]) {
             logger.log(Level.FINE, String.format("New Maximum Value Found: Updating max value from %.0f to %d", statistics[STATISTICS.MAX.index], currentValue));
@@ -148,6 +165,12 @@ public class BinaryFileReadWriter {
         }
     }
 
+    /**
+     * Checks for lowest value and stores result in MIN statistics index location if change detected.
+     * Logs at a FINE level when a change occurs
+     *
+     * @param currentValue Current value accessed from input stream
+     */
     private static void checkIfMinimumValueAndUpdateStatistics(int currentValue) {
         if (currentValue < statistics[STATISTICS.MIN.index]) {
             logger.log(Level.FINE, String.format("New Minimum Value Found: Updating min value from %.0f to %d", statistics[STATISTICS.MIN.index], currentValue));
@@ -159,6 +182,11 @@ public class BinaryFileReadWriter {
         statistics[STATISTICS.SUM.index] += currentValue;
     }
 
+    /**
+     * Returns the mean from an IntStream returning a zero value if IntStream is empty
+     *
+     * @param stream An IntStream of values read from {@link BinaryFileReadWriter#DATA_FILE}
+     */
     private static void computeMeanOfIntStreamAndUpdateStatistics(IntStream stream) {
         OptionalDouble optMean = stream.average();
 
