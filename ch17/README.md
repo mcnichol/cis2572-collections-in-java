@@ -1,4 +1,4 @@
-# CIS2572 Collections in Java
+# Chapter 17 -  Binary I/O
 
 Application can be run by navigating to root folder and executing:
 
