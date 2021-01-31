@@ -228,19 +228,28 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>private static void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#checkIfMaximumValueAndUpdateStatistics-int-">checkIfMaximumValueAndUpdateStatistics</a></span>(int&nbsp;currentValue)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#checkIfMaximumValueAndUpdateStatistics-int-">checkIfMaximumValueAndUpdateStatistics</a></span>(int&nbsp;currentValue)</code>
+<div class="block">Checks for highest value and stores result in MAX statistics index location if change detected.</div>
+</td>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>private static void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#checkIfMinimumValueAndUpdateStatistics-int-">checkIfMinimumValueAndUpdateStatistics</a></span>(int&nbsp;currentValue)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#checkIfMinimumValueAndUpdateStatistics-int-">checkIfMinimumValueAndUpdateStatistics</a></span>(int&nbsp;currentValue)</code>
+<div class="block">Checks for lowest value and stores result in MIN statistics index location if change detected.</div>
+</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>private static void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#computeMeanOfIntStreamAndUpdateStatistics-java.util.stream.IntStream-">computeMeanOfIntStreamAndUpdateStatistics</a></span>(java.util.stream.IntStream&nbsp;stream)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#computeMeanOfIntStreamAndUpdateStatistics-java.util.stream.IntStream-">computeMeanOfIntStreamAndUpdateStatistics</a></span>(java.util.stream.IntStream&nbsp;stream)</code>
+<div class="block">Returns the mean from an IntStream returning a zero value if IntStream is empty</div>
+</td>
 </tr>
 <tr id="i3" class="rowColor">
 <td class="colFirst"><code>private static void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#generateRandomIntsAndWriteToFile--">generateRandomIntsAndWriteToFile</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#generateRandomIntsAndWriteToFile--">generateRandomIntsAndWriteToFile</a></span>()</code>
+<div class="block">Creates a <code>DataOutputStream</code> from <a href="../../org/mcnichol/BinaryFileReadWriter.html#DATA_FILE"><code>DATA_FILE</code></a> and populates it with 50 random
+ integers passed via an <code>IntStream</code>.</div>
+</td>
 </tr>
 <tr id="i4" class="altColor">
 <td class="colFirst"><code>private static java.util.stream.IntStream</code></td>
@@ -268,7 +277,10 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i10" class="altColor">
 <td class="colFirst"><code>private static void</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#readIntegerFileAndPopulateStatistics--">readIntegerFileAndPopulateStatistics</a></span>()</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../org/mcnichol/BinaryFileReadWriter.html#readIntegerFileAndPopulateStatistics--">readIntegerFileAndPopulateStatistics</a></span>()</code>
+<div class="block">Creates a DataInputStream from <a href="../../org/mcnichol/BinaryFileReadWriter.html#DATA_FILE"><code>DATA_FILE</code></a> and populates <a href="../../org/mcnichol/BinaryFileReadWriter.html#statistics"><code>statistics</code></a> with
+ with max, min, mean, and average of included file.</div>
+</td>
 </tr>
 </table>
 <ul class="blockList">
@@ -373,6 +385,9 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>generateRandomIntsAndWriteToFile</h4>
 <pre>private static&nbsp;void&nbsp;generateRandomIntsAndWriteToFile()</pre>
+<div class="block">Creates a <code>DataOutputStream</code> from <a href="../../org/mcnichol/BinaryFileReadWriter.html#DATA_FILE"><code>DATA_FILE</code></a> and populates it with 50 random
+ integers passed via an <code>IntStream</code>. As each value in the <code>IntStream</code> is iterated over a, it is cast
+ to a <code>FunctionalInterface</code> of type <a href="../../org/mcnichol/CheckedFileLogAndWrite.html" title="interface in org.mcnichol"><code>CheckedFileLogAndWrite</code></a> to handle the checked <code>IOException</code></div>
 </li>
 </ul>
 <a name="generateRandomIntStream--">
@@ -381,11 +396,10 @@ extends java.lang.Object</pre>
 <ul class="blockList">
 <li class="blockList">
 <h4>generateRandomIntStream</h4>
-<pre>private static&nbsp;java.util.stream.IntStream&nbsp;generateRandomIntStream()
-                                                           throws java.io.IOException</pre>
+<pre>private static&nbsp;java.util.stream.IntStream&nbsp;generateRandomIntStream()</pre>
 <dl>
-<dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code>java.io.IOException</code></dd>
+<dt><span class="returnLabel">Returns:</span></dt>
+<dd>An <code>IntStream</code> populated with 50 random integers between 0 (inclusive) and 100_000 (exclusive)</dd>
 </dl>
 </li>
 </ul>
@@ -405,6 +419,8 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>readIntegerFileAndPopulateStatistics</h4>
 <pre>private static&nbsp;void&nbsp;readIntegerFileAndPopulateStatistics()</pre>
+<div class="block">Creates a DataInputStream from <a href="../../org/mcnichol/BinaryFileReadWriter.html#DATA_FILE"><code>DATA_FILE</code></a> and populates <a href="../../org/mcnichol/BinaryFileReadWriter.html#statistics"><code>statistics</code></a> with
+ with max, min, mean, and average of included file.</div>
 </li>
 </ul>
 <a name="checkIfMaximumValueAndUpdateStatistics-int-">
@@ -414,6 +430,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>checkIfMaximumValueAndUpdateStatistics</h4>
 <pre>private static&nbsp;void&nbsp;checkIfMaximumValueAndUpdateStatistics(int&nbsp;currentValue)</pre>
+<div class="block">Checks for highest value and stores result in MAX statistics index location if change detected.
+ Logs at a FINE level when a change occurs</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>currentValue</code> - Current value accessed from input stream</dd>
+</dl>
 </li>
 </ul>
 <a name="checkIfMinimumValueAndUpdateStatistics-int-">
@@ -423,6 +445,12 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>checkIfMinimumValueAndUpdateStatistics</h4>
 <pre>private static&nbsp;void&nbsp;checkIfMinimumValueAndUpdateStatistics(int&nbsp;currentValue)</pre>
+<div class="block">Checks for lowest value and stores result in MIN statistics index location if change detected.
+ Logs at a FINE level when a change occurs</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>currentValue</code> - Current value accessed from input stream</dd>
+</dl>
 </li>
 </ul>
 <a name="incrementSumAndUpdateStatistics-int-">
@@ -441,6 +469,11 @@ extends java.lang.Object</pre>
 <li class="blockList">
 <h4>computeMeanOfIntStreamAndUpdateStatistics</h4>
 <pre>private static&nbsp;void&nbsp;computeMeanOfIntStreamAndUpdateStatistics(java.util.stream.IntStream&nbsp;stream)</pre>
+<div class="block">Returns the mean from an IntStream returning a zero value if IntStream is empty</div>
+<dl>
+<dt><span class="paramLabel">Parameters:</span></dt>
+<dd><code>stream</code> - An IntStream of values read from <a href="../../org/mcnichol/BinaryFileReadWriter.html#DATA_FILE"><code>DATA_FILE</code></a></dd>
+</dl>
 </li>
 </ul>
 <a name="printStatistics--">
