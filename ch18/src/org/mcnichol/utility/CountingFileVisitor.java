@@ -12,6 +12,7 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.regex.Pattern;
 
 /**
  * A Custom {@link FileVisitor} used for incrementing ENUM counters without populating full {@link File} objects
@@ -67,9 +68,9 @@ public class CountingFileVisitor<T> implements FileVisitor<T> {
     }
 
     public static String getRelativePathName(Object dir) {
-        String[] value = dir.toString().split(File.separator);
+        String[] value = dir.toString().split(Pattern.quote(File.separator));
 
-        return value.length > 1 ? value[value.length - 1] : "/";
+        return value.length > 1 ? value[value.length - 1] : Pattern.quote(File.separator);
     }
 
     public static FILE_TYPE getFileType(String currentFile) {
@@ -77,7 +78,7 @@ public class CountingFileVisitor<T> implements FileVisitor<T> {
     }
 
     public static String[] splitForFileExtension(String currentFile) {
-        return currentFile.split("\\.");
+        return currentFile.split(Pattern.quote("."));
     }
 
     public static String getFileExtension(String[] fileWithExtension) {
