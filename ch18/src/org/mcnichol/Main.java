@@ -8,6 +8,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Main Application Class
+ * <p>
+ * @see DirectoryFileCounterController for application usage and behavior.
+ */
 public class Main extends Application {
 
 
@@ -17,10 +22,18 @@ public class Main extends Application {
         stage.show();
     }
 
+    /**
+     * Application entrypoint
+     * @param args passed in arguments
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }
 
+    /**
+     * For laying out the user interface leveraging FXML and the MVC pattern of development
+     * @param stage Application Start stage
+     */
     private void layoutStage(Stage stage) {
         Parent root = null;
 

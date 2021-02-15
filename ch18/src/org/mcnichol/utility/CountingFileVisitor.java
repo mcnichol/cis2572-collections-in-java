@@ -1,36 +1,46 @@
 package org.mcnichol.utility;
 
 import javafx.application.Platform;
-import org.mcnichol.Controller;
+import org.mcnichol.DirectoryFileCounterController;
 import org.mcnichol.concurrency.counter.DIRECTORY_COUNTER;
 import org.mcnichol.concurrency.counter.FILE_COUNTER;
-import org.mcnichol.utility.FILE_TYPE;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 
+/**
+ * A Custom {@link FileVisitor} used for incrementing ENUM counters without populating full {@link File} objects
+ * <p>
+ *
+ * @param <T>
+ */
 public class CountingFileVisitor<T> implements FileVisitor<T> {
 
-    private final Controller controller;
+    /**
+     * Controller passed via dependency injection
+     */
+    private final DirectoryFileCounterController directoryFileCounterController;
 
-    public CountingFileVisitor(Controller controller) {
-        this.controller = controller;
+    /**
+     * Constructor taking the UI Controller and providing a handle for testing and usability purposes.
+     * <p>
+     *
+     * @param directoryFileCounterController UI Controller of the MVC format
+     */
+    public CountingFileVisitor(DirectoryFileCounterController directoryFileCounterController) {
+        this.directoryFileCounterController = directoryFileCounterController;
     }
 
     @Override
     public FileVisitResult preVisitDirectory(Object dir, BasicFileAttributes attrs) throws IOException {
         DIRECTORY_COUNTER.count();
 
-        String currentDir = getRelativePathName(dir);
-
-        Platform.runLater(() -> controller.updateCurrentDirectory(currentDir));
+        Platform.runLater(() -> directoryFileCounterController.updateCurrentDirectory(dir.toString()));
 
         return FileVisitResult.CONTINUE;
     }
@@ -63,15 +73,7 @@ public class CountingFileVisitor<T> implements FileVisitor<T> {
     }
 
     public static FILE_TYPE getFileType(String currentFile) {
-        FILE_TYPE type = FILE_TYPE.getType(getFileExtension(splitForFileExtension(currentFile)));
-        if (type == FILE_TYPE.OTHER) {
-            try (OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream("recursive_other_files.dat", true))) {
-                osw.write(String.format("%s\n", currentFile));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return type;
+        return FILE_TYPE.getType(getFileExtension(splitForFileExtension(currentFile)));
     }
 
     public static String[] splitForFileExtension(String currentFile) {

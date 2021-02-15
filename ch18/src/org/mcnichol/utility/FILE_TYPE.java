@@ -2,6 +2,9 @@ package org.mcnichol.utility;
 
 import org.mcnichol.concurrency.counter.*;
 
+/**
+ * Utility File for determining file-type and providing increment typing functionality
+ */
 public enum FILE_TYPE {
 
     DOCUMENT, IMAGE, MUSIC, OTHER, VIDEO;

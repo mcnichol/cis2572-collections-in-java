@@ -37,9 +37,50 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
-public class Controller implements Initializable {
+/**
+ * <h1>DirectoryFileCounterController</h1>
+ * This application uses a JavaFX UI to allow the user to select a directory and recursively or through the use of a
+ * {@link java.nio.file.FileVisitor} walks the directory structure and dispalys a count of all files in the directory.
+ * <p>
+ * <b>Description:</b> This application leverages an {@link javafx.fxml.FXMLLoader} to construct a user interface and map
+ * text and labels and register event handlers.  It then utilizes {@link javafx.beans.property.Property} beans for
+ * one-waya bindings to offload events from the JavaFX UI Thread and instead update through a {@link Timeline}. These
+ * beans are updated via a custom {@link CountingFileVisitor} which implements the {@link java.nio.file.FileVisitor} to
+ * leverage a more optimized depth approach.
+ * <p>
+ * The default behavior is to leverage {@link DirectoryFileCounterController#countRecursivelyReturningTotals(Path)} method call that
+ * recursively walks a {@link Stream<Path>} returning a summation of all files through leveraging the Streaming API.
+ * <p>
+ * <b>Usage:</b> This application can be run from the terminal by navigating to the root directory and running the
+ * packaged JAR in the build directory or by compiling the classes and executing {@link Main#main(String[])} in a native
+ * fashion.
+ * <p>
+ * Because this was written for a course 'Collections in Java' with Barry Speller from College of DuPage,
+ * you must ensure you are using JDK 1.8 which is only packaged with Oracle, Coretto, or a handful of other 1.8 JDK's.
+ * (Not AdoptOpenJDK). If you attempt to run the JAR with AOJDK 1.8 you will see the error:
+ * <p>
+ * <code>
+ * $> /Users/compute/.sdkman/candidates/java/current/bin/java -jar /Users/compute/workspace/cis2572/ch18/out/artifacts/ch18/ch18.jar
+ * Error: Could not find or load main class org.mcnichol.Main
+ * </code>
+ * <p>
+ * If you have issues ensure your JAVA_HOME environment variable is set and leverage the full classpath to Java and the JAR file.
+ * <ul>
+ *     <li>{@code $> FULL_PATH_TO_1.8_JRE/bin/java -jar /FULL_PATH_TO_JAR/ch18.jar} (*Nix)</li>
+ *     <li>{@code C:\FULL_PATH_TO_1.8_JRE\bin\java -jar FULL_PATH_TO_JAR\ch18.jar} (Win)</li>
+ * </ul>
+ * <p>
+ * <b>Course Name:</b> Collections in Java
+ * <b>Section:</b> CIS-2572-NET02
+ * <b>Instructor:</b> Barry Speller
+ *
+ * @author Michael McNichol
+ * @version 1.0
+ * @since 2021/02/14
+ */
+public class DirectoryFileCounterController implements Initializable {
 
-    private static final ExecutorService exec = Executors.newFixedThreadPool(2000);
+    private static final ExecutorService exec = Executors.newFixedThreadPool(10);
 
     @FXML
     public TextField txt_startingRoot;
@@ -76,6 +117,11 @@ public class Controller implements Initializable {
     private final BooleanProperty imageView_property = new SimpleBooleanProperty(false);
     private final StringProperty currentDirectoryProperty = new SimpleStringProperty();
 
+    /**
+     * Method called when button click event is fired
+     *
+     * @param event Event handler
+     */
     @FXML
     void showDialog(ActionEvent event) {
         File directory = showDialogAndGetDirectoryFromUser(event);
@@ -87,13 +133,6 @@ public class Controller implements Initializable {
         if (checkbox_useFileVisitor.isSelected()) {
             countFilesUsingFileVisitor(Paths.get(directory.getPath()));
         } else {
-
-            exec.submit(() -> {
-                imageView_property.set(true);
-                countRecursivelyWithSentinel(Paths.get(directory.getPath()));
-                imageView_property.set(false);
-            });
-
             exec.submit(() -> {
                 imageView_property.set(true);
                 FILE_COUNTER.set(countRecursivelyReturningTotals(Paths.get(directory.getPath())));
@@ -102,6 +141,13 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * Called to initialize a controller after its root element has been completely processed.
+     * Params:
+     *
+     * @param location  The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resources The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         bindProperties();
@@ -111,6 +157,14 @@ public class Controller implements Initializable {
         timeline.play();
     }
 
+    /**
+     * This method duplicates behavior for recursively counting is reserved for showing the multiple approaches.
+     * This one will be preferred over {@link DirectoryFileCounterController#countRecursivelyReturningTotals(Path)} for its ability to update
+     * totals in realtime without looking like a kluge
+     * <p>
+     *
+     * @param filePath Path of current file or directory
+     */
     private void countRecursivelyWithSentinel(Path filePath) {
         if (Files.isDirectory(filePath)) {
             DIRECTORY_COUNTER.count();
@@ -130,6 +184,14 @@ public class Controller implements Initializable {
         }
     }
 
+    /**
+     * This method counts recursively over all directories and sums the result. This is returned and updated in the user
+     * interfaace. Upon each file returned, the associated file-type is incremented.
+     * <p>
+     *
+     * @param filePath Path of current file or directory
+     * @return count of files in directory
+     */
     private long countRecursivelyReturningTotals(Path filePath) {
         if (!Files.isDirectory(filePath)) {
             incrementFileType(filePath.toString());
@@ -137,6 +199,7 @@ public class Controller implements Initializable {
         }
 
         DIRECTORY_COUNTER.count();
+        Platform.runLater(() -> updateCurrentDirectory(filePath.toString()));
         long sum = 0;
 
         try (Stream<Path> list = Files.list(filePath)) {
@@ -150,6 +213,12 @@ public class Controller implements Initializable {
         return sum;
     }
 
+    /**
+     * This method duplicates behavior but leverages a {@link java.nio.file.FileVisitor} as is recommended in more current
+     * versions of JDK documentation.
+     *
+     * @param path Path of the file being leveraged.
+     */
     private void countFilesUsingFileVisitor(Path path) {
         imageView_property.set(true);
         exec.submit(() -> {
@@ -229,7 +298,13 @@ public class Controller implements Initializable {
         return String.format("%,d", l);
     }
 
+    /**
+     * This method is called for updating the User Interface with the current directory being walked.
+     * <p>
+     *
+     * @param updatedDirectory The directory to update the User Interface with
+     */
     public void updateCurrentDirectory(String updatedDirectory) {
-        currentDirectoryProperty.set(updatedDirectory);
+        currentDirectoryProperty.set(CountingFileVisitor.getRelativePathName(updatedDirectory));
     }
 }

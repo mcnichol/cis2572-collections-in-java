@@ -4,7 +4,7 @@ public enum IMAGE_COUNTER {
     INSTANCE;
     private static long count = 0;
 
-    public synchronized static void count() {
+    public static void count() {
         count++;
     }
 
