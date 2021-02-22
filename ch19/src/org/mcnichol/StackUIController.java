@@ -102,6 +102,9 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
         uiAnimationLoop.play();
     }
 
+    /**
+     * Setup initial bindings to be updated when RadioButton focusing stack triggers
+     */
     private void initializeBindings() {
         lbl_genericStackTitle.textProperty().bind(genericStackTypedTitleProperty);
 
@@ -110,6 +113,9 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
         txtArea_max.textProperty().bind(maxValueProperty);
     }
 
+    /**
+     * Rebind stackContents Property to selected RadioButton in ToggleGroup
+     */
     @FXML
     private void updateStackBindings() {
         switch (STACK_TOGGLE.valueOf(getSelectedToggleName())) {
@@ -126,7 +132,8 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
     }
 
     /**
-     * Method called when button click event is fired
+     * Method called when button click event is fired.  Generates 15 random Character, Date, or Integer values
+     * depending on current stack selected with toggleGroup
      */
     @FXML
     void generateRandomStackValues() {
@@ -150,10 +157,21 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
         }
     }
 
+    /**
+     * Method for generating random integers with upperlimit
+     *
+     * @param upperLimitInclusive inclusive upperlimit value
+     * @return random int between 0 - upperLimitInclusive
+     */
     private int generateRandomIntegerValues(int upperLimitInclusive) {
         return (int) (Math.random() * upperLimitInclusive) + 1;
     }
 
+    /**
+     * Method for generating random viewable characters in the ascii range of 33 - 126
+     *
+     * @return {@link Character}
+     */
     private char generateRandomViewableCharacters() {
         int upperLimit = 126;
         int lowerLimit = 33;
@@ -161,6 +179,11 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
         return (char) (Math.random() * (upperLimit - lowerLimit) + lowerLimit);
     }
 
+    /**
+     * Generates random date between 1970 and 2070 with a custom {@link FormattedDate} to override toString formatting
+     *
+     * @return {@link FormattedDate}
+     */
     private FormattedDate generateRandomFormattedDates() {
         int yearUpperLimit = 2070;
         int yearLowerLimit = 1970;
@@ -173,12 +196,20 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
         return getFormattedDate(year, month, dayOfMonth);
     }
 
+    /**
+     * Construct {@link FormattedDate} from Instance
+     *
+     * @param year       year of date
+     * @param month      month of date
+     * @param dayOfMonth day of date
+     * @return {@link FormattedDate}
+     */
     private FormattedDate getFormattedDate(int year, int month, int dayOfMonth) {
         return new FormattedDate(Date.from(LocalDate.of(year, month, dayOfMonth).atStartOfDay().toInstant(ZoneOffset.ofHours(-5))));
     }
 
     /**
-     * Method called when button click event is fired
+     * Method called when button click event is fired. Pops one value of associated stack and displays in user interface
      */
     @FXML
     void popOneFromStack() {
@@ -202,7 +233,8 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
     }
 
     /**
-     * Method called when button click event is fired
+     * Method called when button click event is fired.  Pops all values from stack and populates them in LIFO order
+     * to user interface
      */
     @FXML
     void popAllFromStack() {
@@ -240,6 +272,10 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
         updatedStackTitleTypeInUserInterface(selectedToggleName);
     }
 
+    /**
+     * Updates stack label name that is currently focused
+     * @param selectedToggleName currently selected type toggle
+     */
     private void updatedStackTitleTypeInUserInterface(String selectedToggleName) {
         switch (STACK_TOGGLE.valueOf(selectedToggleName.toUpperCase())) {
             case CHARACTER:
@@ -255,6 +291,10 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
 
     }
 
+    /**
+     * Updates min and max {@link TextField} in user interface
+     * @param selectedToggleName currently selected type toggle
+     */
     private void updateMinMaxInUserInterface(String selectedToggleName) {
         switch (STACK_TOGGLE.valueOf(selectedToggleName.toUpperCase())) {
             case CHARACTER:
@@ -273,6 +313,10 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
 
     }
 
+    /**
+     * Updates contents of stack that has current focus from selectedToggle
+     * @param selectedToggleName currently selected type toggle
+     */
     private void updateStackContentsInUserInterface(String selectedToggleName) {
         switch (STACK_TOGGLE.valueOf(selectedToggleName.toUpperCase())) {
             case CHARACTER:
