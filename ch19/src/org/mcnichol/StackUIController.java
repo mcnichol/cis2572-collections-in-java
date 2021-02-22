@@ -29,6 +29,10 @@ import java.util.ResourceBundle;
  * text, labels, and register event handlers.  It then utilizes {@link javafx.beans.property.Property} beans for
  * one-way bindings to offload events from the JavaFX UI Thread and instead update through a {@link Timeline}.
  * <p>
+ * Application will generate 15 random Integer, Character, or Date objects adding them to associated stacks and
+ * updating the user interface to reflect contents.  Then user can pop individual items from the stack or all items
+ * at once.  These items are popped and displayed into the user interface in LIFO order.
+ * <p>
  * <b>Usage:</b> This application can be run from the terminal by navigating to the root directory and running the
  * packaged JAR in the build directory or by compiling the classes and executing {@link Main#main(String[])} in a native
  * fashion.
@@ -63,7 +67,6 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
     private final MyGenericStack<Date> dateStack = new MyGenericStack<>();
 
     private final StringProperty genericStackTypedTitleProperty = new SimpleStringProperty();
-    private final StringProperty consoleContentProperty = new SimpleStringProperty(" $> Generate Some Random Values!");
     private final StringProperty integerStackProperty = new SimpleStringProperty();
     private final StringProperty characterStackProperty = new SimpleStringProperty();
     private final StringProperty dateStackProperty = new SimpleStringProperty();
@@ -77,7 +80,7 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
     @FXML
     public TextField txtArea_min;
     @FXML
-    public Label txtArea_console;
+    public TextArea txtArea_console;
     @FXML
     public ToggleGroup toggleGroup_stackSelector;
     @FXML
@@ -101,7 +104,6 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
 
     private void initializeBindings() {
         lbl_genericStackTitle.textProperty().bind(genericStackTypedTitleProperty);
-        txtArea_console.textProperty().bind(consoleContentProperty);
 
         txtArea_stackContents.textProperty().bind(integerStackProperty);
         txtArea_min.textProperty().bind(minValueProperty);
@@ -134,7 +136,6 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
                 for (int i = 0; i < 15; i++) {
                     characterStack.push(generateRandomViewableCharacters());
                 }
-
                 break;
             case DATE:
                 for (int i = 0; i < 15; i++) {
@@ -147,7 +148,6 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
                     integerStack.push(generateRandomIntegerValues(1000));
                 }
         }
-
     }
 
     private int generateRandomIntegerValues(int upperLimitInclusive) {
@@ -187,16 +187,17 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
         switch (STACK_TOGGLE.valueOf(selectedToggle.toUpperCase())) {
             case CHARACTER:
                 Character poppedCharacter = characterStack.pop();
-                consoleContentProperty.set(consoleContentProperty.getValue() + "Popped Character: " + poppedCharacter + "\n $> ");
+                txtArea_console.appendText(String.format("Popped Character:\t%s\n $> ", poppedCharacter == null ? "Empty" : poppedCharacter));
+
                 break;
             case DATE:
                 Date poppedDate = dateStack.pop();
-                consoleContentProperty.set(consoleContentProperty.getValue() + "Popped Date: " + poppedDate + "\n $> ");
+                txtArea_console.appendText(String.format("Popped Date:\t%11s\n $> ", poppedDate == null ? "Empty" : poppedDate));
                 break;
             case INTEGER:
             default:
                 Integer poppedInteger = integerStack.pop();
-                consoleContentProperty.set(consoleContentProperty.getValue() + "Popped Integer: " + poppedInteger + "\n $> ");
+                txtArea_console.appendText(String.format("Popped Integer:\t%5s\n $> ", poppedInteger == null ? "Empty" : poppedInteger));
         }
     }
 
@@ -205,6 +206,29 @@ public class StackUIController implements Initializable, UserInterfaceUtility {
      */
     @FXML
     void popAllFromStack() {
+        String selectedToggle = String.valueOf(toggleGroup_stackSelector.getSelectedToggle().getUserData());
+
+        switch (STACK_TOGGLE.valueOf(selectedToggle.toUpperCase())) {
+            case CHARACTER:
+                while (characterStack.size() > 0) {
+                    Character poppedCharacter = characterStack.pop();
+                    txtArea_console.appendText(String.format("Popped Character:\t%s\n $> ", poppedCharacter == null ? "Empty" : poppedCharacter));
+                }
+                break;
+            case DATE:
+                while (dateStack.size() > 0) {
+                    Date poppedDate = dateStack.pop();
+                    txtArea_console.appendText(String.format("Popped Date:\t%11s\n $> ", poppedDate == null ? "Empty" : poppedDate));
+                }
+                break;
+            case INTEGER:
+            default:
+                while (integerStack.size() > 0) {
+                    Integer poppedInteger = integerStack.pop();
+                    txtArea_console.appendText(String.format("Popped Integer:\t%5s\n $> ", poppedInteger == null ? "Empty" : poppedInteger));
+                }
+
+        }
 
     }
 

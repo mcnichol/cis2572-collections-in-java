@@ -3,7 +3,18 @@ package org.mcnichol;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class MyGenericStack<E extends Comparable<E>> extends ArrayList<E> implements MinMax<E> {
+/**
+ * <h1>MyGenericStack</h1>
+ * Generic Stack that contains basic stack operations. (push, pop, peek, size).  Additionally contains max and min
+ * which are updated with every push and pop of the stack.  If the stack is empty then max and min are nullified.
+ * <p>
+ *
+ * @author Michael McNichol
+ * @version 1.0
+ * @since 2021/02/21
+ */
+
+public class MyGenericStack<E extends Comparable<E>> extends ArrayList<E> {
 
     private E max;
     private E min;
@@ -48,7 +59,6 @@ public class MyGenericStack<E extends Comparable<E>> extends ArrayList<E> implem
         this.min = newMin;
     }
 
-    @Override
     public E min() {
         return min;
     }
@@ -57,13 +67,14 @@ public class MyGenericStack<E extends Comparable<E>> extends ArrayList<E> implem
         this.max = newMax;
     }
 
-    @Override
     public E max() {
         return max;
     }
 
     @Override
     public String toString() {
+        if (isEmpty()) return "Empty";
+
         StringBuilder sb = new StringBuilder();
 
         for (int i = size() - 1; i >= 0; i--) {
