@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.mcnichol.StackUIController">
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+    <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+        <Button alignment="CENTER" layoutX="158.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#popOneFromStack" prefHeight="17.0" prefWidth="125.0" text="Pop One" textAlignment="CENTER">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </Button>
+        <Button alignment="CENTER" layoutX="23.0" layoutY="13.0" mnemonicParsing="false" onAction="#generateRandomStackValues" prefHeight="82.0" prefWidth="118.0" text="Generate Random Values And Load Stack" textAlignment="CENTER" wrapText="true">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </Button>
+        <Button alignment="CENTER" layoutX="158.0" layoutY="58.0" mnemonicParsing="false" onAction="#popAllFromStack" prefHeight="17.0" prefWidth="125.0" text="Pop All" textAlignment="CENTER">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </Button>
+        <Label layoutX="17.0" layoutY="107.0" text="Choose GenericStack Type:" textFill="#0e3466" underline="true" />
+        <RadioButton fx:id="integerStackSelector" layoutX="17.0" layoutY="117.0" mnemonicParsing="false" onAction="#updateStackBindings" prefHeight="37.0" prefWidth="74.0" selected="true" text="Integer" userData="INTEGER">
+            <toggleGroup>
+                <ToggleGroup fx:id="toggleGroup_stackSelector" />
+            </toggleGroup>
+        </RadioButton>
+        <RadioButton layoutX="97.0" layoutY="117.0" mnemonicParsing="false" onAction="#updateStackBindings" prefHeight="37.0" prefWidth="91.0" text="Character" toggleGroup="$toggleGroup_stackSelector" userData="CHARACTER" />
+        <RadioButton layoutX="191.0" layoutY="117.0" mnemonicParsing="false" onAction="#updateStackBindings" prefHeight="37.0" prefWidth="66.0" text="Date" toggleGroup="$toggleGroup_stackSelector" userData="DATE" />
+    </Pane>
+    <Pane prefHeight="190.0" prefWidth="312.0" GridPane.columnIndex="2">
+        <Label fx:id="lbl_genericStackTitle" layoutX="1.0" layoutY="14.0" text="MyGenericStack&lt;E&gt;" textFill="#0e3466">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <Label layoutX="1.0" layoutY="62.0" prefHeight="27.0" text="Min: " />
+        <TextField fx:id="txtArea_min" editable="false" layoutX="27.0" layoutY="62.0" prefHeight="27.0" prefWidth="110.0" />
+        <Label layoutX="148.0" layoutY="62.0" prefHeight="27.0" text="Max: " />
+        <TextField fx:id="txtArea_max" editable="false" layoutX="177.0" layoutY="62.0" prefHeight="27.0" prefWidth="110.0" />
+    </Pane>
+    <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <children>
+          <ScrollPane layoutX="18.0" layoutY="-5.0" prefHeight="200.0" prefWidth="284.0">
+              <TextArea prefHeight="196.0" prefWidth="282.0">
+                 <padding>
+                     <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+                 </padding>
+              </TextArea>
+          </ScrollPane>
+      </children></Pane>
+    <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <ScrollPane layoutY="-90.0" prefHeight="280.0" prefWidth="290.0">
+            <TextArea fx:id="txtArea_stackContents" editable="false" prefHeight="278.0" prefWidth="288.0">
+            <padding>
+               <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+            </padding></TextArea>
+        </ScrollPane>
+    </Pane>
+
+</GridPane>
