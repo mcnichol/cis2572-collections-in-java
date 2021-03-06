@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.mcnichol.LoanScheduleController">
+    <columnConstraints>
+        <ColumnConstraints />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    </rowConstraints>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+    <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+        <Label fx:id="lbl_LoanAmount" layoutX="11.0" layoutY="44.0" prefHeight="27.0" text="Loan Amount" textFill="#0e3466" />
+        <TextField fx:id="txtArea_loanAmount" layoutX="132.0" layoutY="44.0" prefHeight="27.0" prefWidth="110.0" />
+        <Label fx:id="lbl_numberOfYears" layoutX="9.0" layoutY="80.0" prefHeight="27.0" text="Number of Years" textFill="#0e3466" />
+        <TextField fx:id="txtArea_numberOfYears" layoutX="132.0" layoutY="82.0" prefHeight="27.0" prefWidth="110.0" />
+        <Label fx:id="lbl_enterLoanInfoTitle" layoutX="11.0" layoutY="1.0" prefHeight="27.0" text="Enter Loan Amount, Number of Years, and Annual Interest Rate" textFill="#0e3466" />
+        <Label fx:id="lbl_annualInterestRate" layoutX="10.0" layoutY="121.0" prefHeight="27.0" text="Annual Interest Rate" textFill="#0e3466" />
+        <TextField fx:id="txtArea_annualInterestRate" layoutX="132.0" layoutY="121.0" prefHeight="27.0" prefWidth="110.0" />
+    </Pane>
+    <Pane prefHeight="190.0" prefWidth="312.0" GridPane.columnIndex="2">
+        <Button fx:id="btn_displayLoanSchedule" alignment="CENTER" layoutX="110.0" layoutY="118.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#printLoanSchedule" prefHeight="37.0" prefWidth="162.0" text="Display Loan Schedule" textAlignment="CENTER" textFill="#0e3466">
+            <padding>
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            </padding>
+        </Button>
+        <ComboBox fx:id="btnCombo_locale" layoutX="110.0" layoutY="48.0" prefWidth="150.0" onAction="#updateLocale"/>
+    </Pane>
+    <Pane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+    <Pane prefHeight="190.0" prefWidth="299.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+        <ScrollPane layoutX="-325.0" layoutY="-17.0" prefHeight="218.0" prefWidth="650.0">
+            <TextArea fx:id="txtArea_console" editable="false" prefHeight="217.0" prefWidth="632.0" wrapText="true" />
+        </ScrollPane>
+    </Pane>
+</GridPane>
