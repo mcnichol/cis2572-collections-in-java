@@ -11,7 +11,7 @@ import java.io.IOException;
 /**
  * Main Application Class for MVC wiring
  * <p>
- * @see ShuntingYardController for application usage and behavior.
+ * @see BalancedStackController for application usage and behavior.
  */
 public class Main extends Application {
 
